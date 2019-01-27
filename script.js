@@ -1,8 +1,8 @@
 class Stopwatch extends React.Component {
     constructor(props) {
         super(props);
-        this.running = false;
         this.state = {
+            running: false,
             times: {
                 minutes: 0,
                 seconds: 0,
@@ -27,14 +27,14 @@ class Stopwatch extends React.Component {
     }
 
     start() {
-        if (!this.running) {
-            this.running = true;
+        if (!this.state.running) {
+            this.state.running = true;
             this.watch = setInterval(() => this.step(), 10);
         }
     }
 
     step() {
-        if (!this.running) return;
+        if (!this.state.running) return;
         this.calculate();
     }
 
@@ -57,31 +57,27 @@ class Stopwatch extends React.Component {
     }
 
     stop() {
-        this.running = false;
+        this.state.running = false;
         clearInterval(this.watch);
     }
 
     render() {
         return (
             <div>
-            <nav className="controls">
-                <button onClick={this.start.bind(this)}>Start</button>
-                <button onClick={this.stop.bind(this)}>Stop</button>
-            </nav>
+                <nav className="controls">
+                    <Button onClick={this.start.bind(this)}>Start</button>
+                    <Button onClick={this.stop.bind(this)}>Stop</button>
+                </nav>
              <div className="stopwatch">
                 {this.format(this.state.times)}
             </div>
-            <ul id="results">
-                {this.state.results.map((result, index) => <li key={index}>{result}</li>)}
-            </ul>
+                <ul id="results">
+                    {this.state.results.map((result, index) => <li key={index}>{result}</li>)}
+                </ul>
             </div>
         );
     }
 }
-
-const button = (props) => (
-    <button onClick = {props.onClick} > {props.children} </button>
-);
 
 function pad0(value) {
     let result = value.toString();
